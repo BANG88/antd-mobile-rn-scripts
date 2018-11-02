@@ -1,11 +1,3 @@
-// @remove-on-eject-begin
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-// @remove-on-eject-end
 'use strict';
 
 const fs = require('fs');
@@ -25,9 +17,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
-// @remove-on-eject-begin
-const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
-// @remove-on-eject-end
+
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -159,7 +149,28 @@ module.exports = {
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
-      'react-native': 'react-native-web',
+			'react-native': 'react-native-web',
+			'../style/images/arrow-down.png':'../style/images/arrow-down@2x.png',
+			'../style/images/arrow-up.png':'../style/images/arrow-up@2x.png',
+			'../style/images/arrow.png':'../style/images/arrow@2x.png',
+			'../style/images/check_w.png':'../style/images/check_w@2x.png',
+			'../style/images/check.png':'../style/images/check@2x.png',
+			'../style/images/cross_w.png':'../style/images/cross_w@2x.png',
+			'../style/images/cross.png':'../style/images/cross@2x.png',
+			'../style/images/error.png':'../style/images/error@2x.png',
+			'../style/images/more_w.png':'../style/images/more_w@2x.png',
+			'../style/images/more.png':'../style/images/more@2x.png',
+			'../style/images/search.png':'../style/images/search@2x.png',
+			'./image/checked.png':'./image/checked@2x.png',
+			'./image/checked_disable.png':'./image/checked_disable@2x.png',
+			'./image/normal.png':'./image/normal@2x.png',
+			'./image/normal_disable.png':'./image/normal_disable@2x.png',
+			'./images/fail.png':'./images/fail@2x.png',
+			'./images/offline.png':'./images/offline@2x.png',
+			'./images/success.png':'./images/success@2x.png',
+			'./style/assets/down.png':'./style/assets/down@2x.png',
+			'./style/assets/up.png':'./style/assets/up@2x.png',
+			// './image/normal_disable.png':'./image/normal_disable@2x.png',
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -170,7 +181,7 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+      new ModuleScopePlugin([paths.appSrc], [paths.appPackageJson]),
     ],
   },
   resolveLoader: {
@@ -196,19 +207,12 @@ module.exports = {
             options: {
               formatter: require.resolve('react-dev-utils/eslintFormatter'),
               eslintPath: require.resolve('eslint'),
-              // @remove-on-eject-begin
-              baseConfig: {
-                extends: [require.resolve('eslint-config-react-app')],
-                settings: { react: { version: '999.999.999' } },
-              },
-              ignore: false,
-              useEslintrc: false,
-              // @remove-on-eject-end
+
             },
             loader: require.resolve('eslint-loader'),
           },
         ],
-        include: paths.appSrc,
+        include: [paths.appSrc],
       },
       {
         // "oneOf" will traverse all following loaders until one will
@@ -230,28 +234,23 @@ module.exports = {
           // The preset includes JSX, Flow, and some ESnext features.
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
-            include: paths.appSrc,
+						include: [paths.appSrc,
+
+							paths.appNodeModules + "/react-native-camera-roll-picker",
+							paths.appNodeModules + "/react-native-collapsible",
+							paths.appNodeModules + "/react-native-menu",
+
+						],
             loader: require.resolve('babel-loader'),
             options: {
-              customize: require.resolve(
-                'babel-preset-react-app/webpack-overrides'
-              ),
-              // @remove-on-eject-begin
-              babelrc: false,
-              configFile: false,
-              presets: [require.resolve('babel-preset-react-app')],
-              // Make sure we have a unique cache identifier, erring on the
-              // side of caution.
-              // We remove this when the user ejects because the default
-              // is sane and uses Babel options. Instead of options, we use
-              // the react-scripts and babel-preset-react-app versions.
-              cacheIdentifier: getCacheIdentifier('development', [
-                'babel-plugin-named-asset-import',
-                'babel-preset-react-app',
-                'react-dev-utils',
-                'react-scripts',
-              ]),
-              // @remove-on-eject-end
+              // customize: require.resolve(
+              //   'babel-preset-react-app/webpack-overrides'
+              // ),
+							presets: [
+                [
+                  'react-app'
+                ],
+              ],
               plugins: [
                 [
                   require.resolve('babel-plugin-named-asset-import'),
@@ -277,7 +276,7 @@ module.exports = {
           {
             test: /\.(js|mjs)$/,
             exclude: /@babel(?:\/|\\{1,2})runtime/,
-            loader: require.resolve('babel-loader'),
+						loader: require.resolve('babel-loader'),
             options: {
               babelrc: false,
               configFile: false,
@@ -291,14 +290,7 @@ module.exports = {
               cacheDirectory: true,
               // Don't waste time on Gzipping the cache
               cacheCompression: false,
-              // @remove-on-eject-begin
-              cacheIdentifier: getCacheIdentifier('development', [
-                'babel-plugin-named-asset-import',
-                'babel-preset-react-app',
-                'react-dev-utils',
-                'react-scripts',
-              ]),
-              // @remove-on-eject-end
+
               // If an error happens in a package, it's possible to be
               // because it was compiled. Thus, we don't want the browser
               // debugger to show the original code. Instead, the code
