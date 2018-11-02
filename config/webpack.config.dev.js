@@ -254,7 +254,7 @@ module.exports = {
               plugins: [
 								[
 									require.resolve('babel-plugin-import'),
-									{ "libraryName": "antd-mobile-rn" },
+									{ "libraryName": "antd-mobile-rn", fileName: 'index.native' },
 								],
                 [
                   require.resolve('babel-plugin-named-asset-import'),
