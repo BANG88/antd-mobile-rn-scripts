@@ -170,7 +170,6 @@ module.exports = {
 			'./images/success.png':'./images/success@2x.png',
 			'./style/assets/down.png':'./style/assets/down@2x.png',
 			'./style/assets/up.png':'./style/assets/up@2x.png',
-			// './image/normal_disable.png':'./image/normal_disable@2x.png',
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding
@@ -236,16 +235,15 @@ module.exports = {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
 						include: [paths.appSrc,
 
-							paths.appNodeModules + "/react-native-camera-roll-picker",
 							paths.appNodeModules + "/react-native-collapsible",
 							paths.appNodeModules + "/react-native-menu",
 
 						],
             loader: require.resolve('babel-loader'),
             options: {
-              // customize: require.resolve(
-              //   'babel-preset-react-app/webpack-overrides'
-              // ),
+              customize: require.resolve(
+                'babel-preset-react-app/webpack-overrides'
+              ),
 							presets: [
                 [
                   'react-app'
@@ -254,7 +252,7 @@ module.exports = {
               plugins: [
 								[
 									require.resolve('babel-plugin-import'),
-									{ "libraryName": "antd-mobile-rn", fileName: 'index.native' },
+									{ "libraryName": "@ant-design/react-native", fileName: 'index.native' },
 								],
                 [
                   require.resolve('babel-plugin-named-asset-import'),
